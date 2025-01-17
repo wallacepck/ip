@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Mana {
@@ -18,6 +20,8 @@ public class Mana {
         System.out.println(BAR);
         System.out.println("Hello! Its me, \n" + logo + "What's up?");
 
+        List<String> tasks = new ArrayList<>();
+
         // Main loop
         while (true) {
             System.out.print("> ");
@@ -25,8 +29,15 @@ public class Mana {
 
             if (rawInput.equals("exit")) {
                 break;
+            } else if (rawInput.equals("list")) {
+                System.out.println("Tasks:");
+                int index = 1;
+                for (String t : tasks) {
+                    System.out.printf("%d. %s\n", index++, t);
+                }
             } else {
-                System.out.println(rawInput);
+                tasks.add(rawInput);
+                System.out.printf("Added task: %s\n", rawInput);
             }
         }
 
