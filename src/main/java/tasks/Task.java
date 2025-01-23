@@ -1,4 +1,6 @@
-public class Task {
+package tasks;
+
+public abstract class Task {
     protected String title;
     protected boolean isDone;
 
@@ -16,5 +18,10 @@ public class Task {
 
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[%s] %s", this.isDone ? "X" : " ", this.title);
     }
 }

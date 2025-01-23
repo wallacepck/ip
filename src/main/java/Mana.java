@@ -1,7 +1,9 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import tasks.Deadline;
+import tasks.Event;
+import tasks.Task;
+import tasks.Todo;
+
+import java.util.*;
 
 public class Mana {
     private static final String BAR = "____________________________________________________________";
@@ -51,12 +53,61 @@ public class Mana {
                 } catch (NumberFormatException | IndexOutOfBoundsException e) {
                     System.out.printf("No task at index %s%n", words[1]);
                 }
-            } else if (words[0].equals("add")) {
+            } else if (words[0].equals("todo")) {
                 if (words.length == 1) System.out.print("Missing description for task!");
-                tasks.add(new Task(String.join(
+                tasks.add(new Todo(String.join(
                         " ",
                         Arrays.copyOfRange(words, 1, words.length)))
                 );
+                printList("Tasks:", tasks);
+            } else if (words[0].equals("deadline")) {
+                if (words.length == 1) System.out.print("Missing description for task!");
+
+                StringJoiner accum = new StringJoiner(" ");
+                String title = null;
+                String by;
+                for (int i = 1; i < words.length; i++) {
+                    String s = words[i];
+
+                    if (s.equals("--by")) {
+                        title = accum.toString();
+                        accum = new StringJoiner(" ");
+                        continue;
+                    }
+
+                    accum.add(s);
+                }
+                by = accum.toString();
+                if (title == null || accum.length() == 0) return;
+
+                tasks.add(new Deadline(title, by));
+                printList("Tasks:", tasks);
+            } else if (words[0].equals("event")) {
+                if (words.length == 1) System.out.print("Missing description for task!");
+
+                StringJoiner accum = new StringJoiner(" ");
+                String title = null;
+                String start = null;
+                String end;
+                for (int i = 1; i < words.length; i++) {
+                    String s = words[i];
+
+                    if (s.equals("--from")) {
+                        title = accum.toString();
+                        accum = new StringJoiner(" ");
+                        continue;
+                    } else if (s.equals("--to")) {
+                        start = accum.toString();
+                        accum = new StringJoiner(" ");
+                        continue;
+                    }
+
+                    accum.add(s);
+                }
+                end = accum.toString();
+                if (title == null || start == null || accum.length() == 0) return;
+
+                tasks.add(new Event(title, start, end));
                 printList("Tasks:", tasks);
             } else {
                 System.out.printf("No such command: %s\n", rawInput);
@@ -72,9 +123,7 @@ public class Mana {
         System.out.println(title);
         int index = 1;
         for (Task t : tasks) {
-            System.out.printf("%d.%s %s\n", index++,
-                    t.isDone ? "[X]" : "[ ]",
-                    t.getTitle());
+            System.out.printf("%d.%s\n", index++, t.toString());
         }
     }
 }
