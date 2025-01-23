@@ -39,84 +39,94 @@ public class Mana {
             String[] words = rawInput.split(" ");
             if (words.length == 0) continue;
 
-            if (rawInput.equals("exit")) {
-                break;
-            } else if (rawInput.equals("list")) {
-                printList("Tasks:", tasks);
-            } else if (words[0].equals("done")) {
-                if (words.length == 1) System.out.print("Missing task specifier!");
-                try {
-                    tasks.get(Integer.parseInt(words[1]) - 1).setDone(true);
+            try {
+                if (rawInput.equals("exit")) {
+                    break;
+                } else if (rawInput.equals("list")) {
                     printList("Tasks:", tasks);
-                } catch (NumberFormatException | IndexOutOfBoundsException e) {
-                    System.out.printf("No task at index %s%n", words[1]);
-                }
-            } else if (words[0].equals("undone")) {
-                if (words.length == 1) System.out.print("Missing task specifier!");
-                try {
-                    tasks.get(Integer.parseInt(words[1]) - 1).setDone(false);
+                } else if (words[0].equals("done")) {
+                    if (words.length == 1) throw new ManaException("Missing task specifier!");
+                    try {
+                        tasks.get(Integer.parseInt(words[1]) - 1).setDone(true);
+                        printList("Tasks:", tasks);
+                    } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                        throw new ManaException("No task at index %s%n", words[1]);
+                    }
+                } else if (words[0].equals("undone")) {
+                    if (words.length == 1) throw new ManaException("Missing task specifier!");
+                    try {
+                        tasks.get(Integer.parseInt(words[1]) - 1).setDone(false);
+                        printList("Tasks:", tasks);
+                    } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                        throw new ManaException("No task at index %s%n", words[1]);
+                    }
+                } else if (words[0].equals("todo")) {
+                    if (words.length == 1) throw new ManaException("Missing description for task!");
+                    tasks.add(new Todo(String.join(
+                            " ",
+                            Arrays.copyOfRange(words, 1, words.length)))
+                    );
                     printList("Tasks:", tasks);
-                } catch (NumberFormatException | IndexOutOfBoundsException e) {
-                    System.out.printf("No task at index %s%n", words[1]);
-                }
-            } else if (words[0].equals("todo")) {
-                if (words.length == 1) System.out.print("Missing description for task!");
-                tasks.add(new Todo(String.join(
-                        " ",
-                        Arrays.copyOfRange(words, 1, words.length)))
-                );
-                printList("Tasks:", tasks);
-            } else if (words[0].equals("deadline")) {
-                if (words.length == 1) System.out.print("Missing description for task!");
+                } else if (words[0].equals("deadline")) {
+                    if (words.length == 1) throw new ManaException("Missing description for task!");
 
-                StringJoiner accum = new StringJoiner(" ");
-                String title = null;
-                String by;
-                for (int i = 1; i < words.length; i++) {
-                    String s = words[i];
+                    StringJoiner accum = new StringJoiner(" ");
+                    String title = null;
+                    String by;
+                    for (int i = 1; i < words.length; i++) {
+                        String s = words[i];
 
-                    if (s.equals("--by")) {
-                        title = accum.toString();
-                        accum = new StringJoiner(" ");
-                        continue;
+                        if (s.equals("--by")) {
+                            title = accum.toString();
+                            accum = new StringJoiner(" ");
+                            continue;
+                        }
+
+                        accum.add(s);
+                    }
+                    by = accum.toString();
+                    if (title == null) {
+                        throw new ManaException("Missing deadline for task!");
                     }
 
-                    accum.add(s);
-                }
-                by = accum.toString();
-                if (title == null || accum.length() == 0) return;
+                    tasks.add(new Deadline(title, by));
+                    printList("Tasks:", tasks);
+                } else if (words[0].equals("event")) {
+                    if (words.length == 1) throw new ManaException("Missing description for task!");
 
-                tasks.add(new Deadline(title, by));
-                printList("Tasks:", tasks);
-            } else if (words[0].equals("event")) {
-                if (words.length == 1) System.out.print("Missing description for task!");
+                    StringJoiner accum = new StringJoiner(" ");
+                    String title = null;
+                    String start = null;
+                    String end;
+                    for (int i = 1; i < words.length; i++) {
+                        String s = words[i];
 
-                StringJoiner accum = new StringJoiner(" ");
-                String title = null;
-                String start = null;
-                String end;
-                for (int i = 1; i < words.length; i++) {
-                    String s = words[i];
+                        if (s.equals("--from")) {
+                            title = accum.toString();
+                            accum = new StringJoiner(" ");
+                            continue;
+                        } else if (s.equals("--to")) {
+                            start = accum.toString();
+                            accum = new StringJoiner(" ");
+                            continue;
+                        }
 
-                    if (s.equals("--from")) {
-                        title = accum.toString();
-                        accum = new StringJoiner(" ");
-                        continue;
-                    } else if (s.equals("--to")) {
-                        start = accum.toString();
-                        accum = new StringJoiner(" ");
-                        continue;
+                        accum.add(s);
+                    }
+                    end = accum.toString();
+                    if (title == null) {
+                        throw new ManaException("Missing start date for task!");
+                    } else if (start == null) {
+                        throw new ManaException("Missing end date for task!");
                     }
 
-                    accum.add(s);
+                    tasks.add(new Event(title, start, end));
+                    printList("Tasks:", tasks);
+                } else {
+                    throw new ManaException("No such command: %s", rawInput);
                 }
-                end = accum.toString();
-                if (title == null || start == null || accum.length() == 0) return;
-
-                tasks.add(new Event(title, start, end));
-                printList("Tasks:", tasks);
-            } else {
-                System.out.printf("No such command: %s\n", rawInput);
+            } catch (ManaException e) {
+                System.out.println(e.getMessage());
             }
         }
 
