@@ -122,7 +122,15 @@ public class Mana {
 
                     tasks.add(new Event(title, start, end));
                     printList("Tasks:", tasks);
-                } else {
+                } else if (words[0].equals("delete")) {
+                    if (words.length == 1) throw new ManaException("Missing task specifier!");
+                    try {
+                        tasks.remove(Integer.parseInt(words[1]) - 1);
+                        printList("Tasks:", tasks);
+                    } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                        throw new ManaException("No task at index %s%n", words[1]);
+                    }
+                }  else {
                     throw new ManaException("No such command: %s", rawInput);
                 }
             } catch (ManaException e) {
