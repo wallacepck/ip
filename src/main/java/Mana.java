@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,29 +21,60 @@ public class Mana {
         System.out.println(BAR);
         System.out.println("Hello! Its me, \n" + logo + "What's up?");
 
-        List<String> tasks = new ArrayList<>();
+        List<Task> tasks = new ArrayList<>();
 
         // Main loop
         while (true) {
             System.out.print("> ");
             String rawInput = reader.nextLine();
+            String[] words = rawInput.split(" ");
+            if (words.length == 0) continue;
 
             if (rawInput.equals("exit")) {
                 break;
             } else if (rawInput.equals("list")) {
+                printList("Tasks:", tasks);
                 System.out.println("Tasks:");
-                int index = 1;
-                for (String t : tasks) {
-                    System.out.printf("%d. %s\n", index++, t);
+            } else if (words[0].equals("done")) {
+                if (words.length == 1) System.out.print("Missing task specifier!");
+                try {
+                    tasks.get(Integer.parseInt(words[1]) - 1).setDone(true);
+                    printList("Tasks:", tasks);
+                } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                    System.out.printf("No task at index %s%n", words[1]);
                 }
+            } else if (words[0].equals("undone")) {
+                if (words.length == 1) System.out.print("Missing task specifier!");
+                try {
+                    tasks.get(Integer.parseInt(words[1]) - 1).setDone(false);
+                    printList("Tasks:", tasks);
+                } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                    System.out.printf("No task at index %s%n", words[1]);
+                }
+            } else if (words[0].equals("add")) {
+                if (words.length == 1) System.out.print("Missing description for task!");
+                tasks.add(new Task(String.join(
+                        " ",
+                        Arrays.copyOfRange(words, 1, words.length)))
+                );
+                printList("Tasks:", tasks);
             } else {
-                tasks.add(rawInput);
-                System.out.printf("Added task: %s\n", rawInput);
+                System.out.printf("No such command: %s\n", rawInput);
             }
         }
 
         // Exit
         System.out.println("Bye!");
         System.out.println(BAR);
+    }
+
+    static void printList(String title, List<Task> tasks) {
+        System.out.println(title);
+        int index = 1;
+        for (Task t : tasks) {
+            System.out.printf("%d.%s %s\n", index++,
+                    t.isDone ? "[X]" : "[ ]",
+                    t.getTitle());
+        }
     }
 }
