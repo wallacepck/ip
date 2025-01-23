@@ -25,10 +25,17 @@ public class Mana {
 
         List<Task> tasks = new ArrayList<>();
 
+        boolean repeatInput = false;
+
         // Main loop
         while (true) {
             System.out.print("> ");
             String rawInput = reader.nextLine();
+            if (rawInput.equals("testmode")) {
+                repeatInput = true;
+                rawInput = reader.nextLine();
+            }
+            if (repeatInput) System.out.println(rawInput);
             String[] words = rawInput.split(" ");
             if (words.length == 0) continue;
 
@@ -36,7 +43,6 @@ public class Mana {
                 break;
             } else if (rawInput.equals("list")) {
                 printList("Tasks:", tasks);
-                System.out.println("Tasks:");
             } else if (words[0].equals("done")) {
                 if (words.length == 1) System.out.print("Missing task specifier!");
                 try {
