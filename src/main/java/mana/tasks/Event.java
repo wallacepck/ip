@@ -1,4 +1,4 @@
-package Mana.tasks;
+package mana.tasks;
 
 /**
  * Not to be confused with events used in observer design pattern

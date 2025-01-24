@@ -1,4 +1,4 @@
-package Mana.tasks;
+package mana.tasks;
 
 public class Todo extends Task {
     public Todo(String title) {

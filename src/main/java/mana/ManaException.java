@@ -1,4 +1,4 @@
-package Mana;
+package mana;
 
 public class ManaException extends RuntimeException {
     public ManaException(String msg) {

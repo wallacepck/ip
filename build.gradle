@@ -30,7 +30,7 @@ test {
 }
 
 application {
-    mainClass.set("Mana/Mana")
+    mainClass.set("mana/Mana")
 }
 
 shadowJar {

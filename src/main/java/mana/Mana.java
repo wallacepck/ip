@@ -1,9 +1,9 @@
-package Mana;
+package mana;
 
-import Mana.tasks.Deadline;
-import Mana.tasks.Event;
-import Mana.tasks.Task;
-import Mana.tasks.Todo;
+import mana.tasks.Deadline;
+import mana.tasks.Event;
+import mana.tasks.Task;
+import mana.tasks.Todo;
 
 import java.util.*;
 

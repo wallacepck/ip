@@ -1,4 +1,4 @@
-package Mana.tasks;
+package mana.tasks;
 
 public abstract class Task {
     protected String title;
