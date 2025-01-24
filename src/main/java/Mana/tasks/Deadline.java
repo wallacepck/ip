@@ -1,6 +1,4 @@
-package tasks;
-
-import tasks.Task;
+package Mana.tasks;
 
 public class Deadline extends Task {
     protected String by;

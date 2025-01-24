@@ -1,7 +1,9 @@
-import tasks.Deadline;
-import tasks.Event;
-import tasks.Task;
-import tasks.Todo;
+package Mana;
+
+import Mana.tasks.Deadline;
+import Mana.tasks.Event;
+import Mana.tasks.Task;
+import Mana.tasks.Todo;
 
 import java.util.*;
 

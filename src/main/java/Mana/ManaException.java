@@ -1,3 +1,5 @@
+package Mana;
+
 public class ManaException extends RuntimeException {
     public ManaException(String msg) {
         super(msg);
