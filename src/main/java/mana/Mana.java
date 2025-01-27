@@ -1,16 +1,22 @@
 package mana;
 
+import mana.io.TaskListSaveManager;
 import mana.tasks.Deadline;
 import mana.tasks.Event;
 import mana.tasks.Task;
+import mana.tasks.TaskRegistrar;
 import mana.tasks.Todo;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 public class Mana {
     private static final String BAR = "____________________________________________________________";
 
     public static void main(String[] args) {
+        TaskRegistrar.register();
+        
         String logo = """
                   __  __                  \s
                  |  \\/  |                 \s
@@ -25,7 +31,17 @@ public class Mana {
         System.out.println(BAR);
         System.out.println("Hello! Its me, \n" + logo + "What's up?");
 
-        List<Task> tasks = new ArrayList<>();
+        List<Task> tasks = null;
+        try {
+            tasks = TaskListSaveManager.loadFromFile();
+        } catch (IOException e) {
+            if (e instanceof FileNotFoundException) tasks = new ArrayList<>();
+            else {
+                System.out.println("Oh no! It seems your save file is corrupted :(");
+                System.out.println("If you still wish to start the program, backup the file elsewhere!");
+                return;
+            }
+        }
 
         boolean repeatInput = false;
 
@@ -137,6 +153,12 @@ public class Mana {
                 }
             } catch (ManaException e) {
                 System.out.println(e.getMessage());
+            }
+
+            try {
+                TaskListSaveManager.saveToFile(tasks);
+            } catch (IOException e) {
+                System.out.println("Oh no! It seems Mana can't save your task list, please contact technical support!");
             }
         }
 
