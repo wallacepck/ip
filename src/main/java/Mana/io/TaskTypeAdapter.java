@@ -4,11 +4,14 @@ import mana.tasks.Task;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TaskTypeAdapter implements JsonSerializer<Task>, JsonDeserializer<Task> {
-    private static final Gson gson = new Gson();
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
+            .create();
     private static final Map<Class<? extends Task>, String> serialisedTypeNames = new HashMap<>();
     private static final Map<String, Class<? extends Task>> deserialisedTypes = new HashMap<>();
     

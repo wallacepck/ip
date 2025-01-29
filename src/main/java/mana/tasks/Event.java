@@ -1,13 +1,17 @@
 package mana.tasks;
 
+import mana.util.DateTimeUtil;
+
+import java.time.LocalDateTime;
+
 /**
  * Not to be confused with events used in observer design pattern
  */
 public class Event extends Task {
-    protected String startDate;
-    protected String endDate;
+    protected LocalDateTime startDate;
+    protected LocalDateTime endDate;
 
-    public Event(String title, String start, String end) {
+    public Event(String title, LocalDateTime start, LocalDateTime end) {
         super(title);
         this.startDate = start;
         this.endDate = end;
@@ -18,7 +22,7 @@ public class Event extends Task {
         return String.format("%s%s (from: %s to: %s)",
                 "[E]",
                 super.toString(),
-                startDate,
-                endDate);
+                DateTimeUtil.toStandardFormat(startDate),
+                DateTimeUtil.toStandardFormat(endDate));
     }
 }

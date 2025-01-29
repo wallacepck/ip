@@ -6,9 +6,12 @@ import mana.tasks.Event;
 import mana.tasks.Task;
 import mana.tasks.TaskRegistrar;
 import mana.tasks.Todo;
+import mana.util.DateTimeUtil;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class Mana {
@@ -35,12 +38,13 @@ public class Mana {
         try {
             tasks = TaskListSaveManager.loadFromFile();
         } catch (IOException e) {
-            if (e instanceof FileNotFoundException) tasks = new ArrayList<>();
-            else {
+            if (!(e instanceof FileNotFoundException)) {
                 System.out.println("Oh no! It seems your save file is corrupted :(");
                 System.out.println("If you still wish to start the program, backup the file elsewhere!");
                 return;
             }
+        } finally {
+            if (tasks == null) tasks = new ArrayList<>();
         }
 
         boolean repeatInput = false;
@@ -106,8 +110,11 @@ public class Mana {
                     if (title == null) {
                         throw new ManaException("Missing deadline for task!");
                     }
-
-                    tasks.add(new Deadline(title, by));
+                    try {
+                        tasks.add(new Deadline(title, DateTimeUtil.parseStandardFormat(by)));
+                    } catch (DateTimeParseException e) {
+                        throw new ManaException("Malformed date format! Your date format should be %s", DateTimeUtil.STANDARD_INPUT_FORMAT);
+                    }
                     printList("Tasks:", tasks);
                 } else if (words[0].equals("event")) {
                     if (words.length == 1) throw new ManaException("Missing description for task!");
@@ -138,7 +145,12 @@ public class Mana {
                         throw new ManaException("Missing end date for task!");
                     }
 
-                    tasks.add(new Event(title, start, end));
+                    try {
+                        tasks.add(new Event(title, DateTimeUtil.parseStandardFormat(start), DateTimeUtil.parseStandardFormat(end)));
+                    } catch (DateTimeParseException e) {
+                        throw new ManaException("Malformed date format! Your date format should be %s", DateTimeUtil.STANDARD_INPUT_FORMAT);
+                    }
+                    
                     printList("Tasks:", tasks);
                 } else if (words[0].equals("delete")) {
                     if (words.length == 1) throw new ManaException("Missing task specifier!");
