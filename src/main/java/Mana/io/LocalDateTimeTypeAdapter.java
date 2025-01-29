@@ -8,6 +8,7 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Adapted from <a href="https://stackoverflow.com/questions/70412805/what-does-this-error-mean-java-lang-reflect-inaccessibleobjectexception-unable">...</a>
@@ -19,7 +20,7 @@ public class LocalDateTimeTypeAdapter extends TypeAdapter<LocalDateTime> {
             jsonWriter.nullValue();
             return;
         }
-        jsonWriter.value(localDate.toString());
+        jsonWriter.value(localDate.format(DateTimeFormatter.ISO_DATE_TIME));
     }
 
     @Override
@@ -28,6 +29,6 @@ public class LocalDateTimeTypeAdapter extends TypeAdapter<LocalDateTime> {
             jsonReader.nextNull();
             return null;
         }
-        return ZonedDateTime.parse(jsonReader.nextString()).toLocalDateTime();
+        return LocalDateTime.parse(jsonReader.nextString(), DateTimeFormatter.ISO_DATE_TIME);
     }
 }
