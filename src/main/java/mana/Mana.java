@@ -19,7 +19,10 @@ public class Mana {
         agent.run();
     }
 
-    public void run() {
+    /**
+     * Main running logic of Mana
+     */
+    private void run() {
         ui = new UserInterface();
         try {
             tasks = TaskListSaveManager.loadFromFile();

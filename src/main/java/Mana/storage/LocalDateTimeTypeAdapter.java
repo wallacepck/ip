@@ -10,6 +10,7 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 /**
+ * Gson de/serialiser for {@link LocalDateTime}.
  * Adapted from <a href="https://stackoverflow.com/questions/70412805/what-does-this-error-mean-java-lang-reflect-inaccessibleobjectexception-unable">...</a>
  */
 public class LocalDateTimeTypeAdapter extends TypeAdapter<LocalDateTime> {

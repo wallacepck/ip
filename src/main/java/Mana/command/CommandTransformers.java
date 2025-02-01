@@ -10,6 +10,9 @@ import mana.ManaException;
 import mana.util.DateTimeUtil;
 import mana.util.TaskList;
 
+/**
+ * Transformers transform arguments into valid Command parameters
+ */
 public class CommandTransformers {
     public static final Function<List<String>, Object> INDEX_TRANSFORMER = (words) -> {
         if (words.size() != 1) {

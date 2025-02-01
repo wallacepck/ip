@@ -12,6 +12,9 @@ import mana.tasks.Event;
 import mana.tasks.Todo;
 import mana.util.TaskList;
 
+/**
+ * Singleton parser class for all ({@link TaskList}) commands
+ */
 public class CommandParser {
     private static final Map<String, Command<TaskList>> commandMap = new HashMap<>();
 
@@ -66,7 +69,14 @@ public class CommandParser {
                 })
         );
     }
-    
+
+    /**
+     * Parses the word list into an argument map and executes the command on the {@code taskList}.
+     * 
+     * @param taskList The {@link TaskList} the command should operate on.
+     * @param words The word array from the command line input.
+     * @return See: {@link Command#execute(Object, Map)}.
+     */
     public static Command.CommandResult parseAndExecute(TaskList taskList, String[] words) {
         if (words.length == 0) return Command.CommandResult.OK;
         if (commandMap.containsKey(words[0])) {

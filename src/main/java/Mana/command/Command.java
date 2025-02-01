@@ -8,7 +8,14 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+/**
+ * Represents a Command with parameters, and a single action on a target object
+ * @param <T> The target type
+ */
 public class Command<T> {
+    /**
+     * The key that arguments before all keywords is mapped to, e.g. "fish" in {@code delete fish --in Pacific}
+     */
     public static final String EMPTY_KEYWORD = "";
     public enum CommandResult {
         OK,
@@ -23,7 +30,15 @@ public class Command<T> {
         this.name = name;
         this.parameters = new HashMap<>();
     }
-    
+
+    /**
+     * Adds a parameter to this command.
+     * 
+     * @param keyword The keyword for this parameter.
+     * @param transformer converts the given argument to a valid argument that this command can use. 
+     * @return Itself.
+     * @throws IllegalArgumentException If the command already has this parameter.
+     */
     public Command<T> withParameterTransform(String keyword, Function<List<String>, Object> transformer) {
         if (parameters.containsKey(keyword)) {
             throw new IllegalArgumentException(String.format("Command already has keyword '%s'!", keyword));
@@ -31,16 +46,38 @@ public class Command<T> {
         parameters.put(keyword, transformer);
         return this;
     }
-
+    
+    /**
+     * Adds a transformer to the default {@link #EMPTY_KEYWORD} for this command.
+     * 
+     * @param transformer converts the given argument to a valid argument that this command can use. 
+     * @return Itself.
+     * @throws IllegalArgumentException If the command already has a transformer for the default keyword.
+     */
     public Command<T> withParameterTransform(Function<List<String>, Object> transformer) {
         return this.withParameterTransform(EMPTY_KEYWORD, transformer);
     }
-    
+
+    /**
+     * Assigns this command the given action.
+     * 
+     * @param action The action to use on the target object of type {@code T}.
+     * @return Itself.
+     */
     public Command<T> withAction(BiFunction<T, Map<String, Object>, CommandResult> action) {
         this.action = action;
         return this;
     }
-    
+
+    /**
+     * Executes this command given the target and arguments.
+     * 
+     * @param target Target object of action. 
+     * @param args Parsed argument map.
+     * @return {@link CommandResult#OK} if successful, else 
+     * <p> 
+     * {@link CommandResult#EXIT} if the program should exit.
+     */
     public CommandResult execute(T target, Map<String, List<String>> args) {
         Map<String, Object> transformedArgs = new HashMap<>();
         if (!parameters.isEmpty()) {

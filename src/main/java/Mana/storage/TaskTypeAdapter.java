@@ -17,13 +17,24 @@ import com.google.gson.JsonSerializer;
 
 import mana.tasks.Task;
 
+/**
+ * Gson de/serialiser for subclasses of {@link Task}.
+ */
 public class TaskTypeAdapter implements JsonSerializer<Task>, JsonDeserializer<Task> {
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
             .create();
     private static final Map<Class<? extends Task>, String> serialisedTypeNames = new HashMap<>();
     private static final Map<String, Class<? extends Task>> deserialisedTypes = new HashMap<>();
-    
+
+    /**
+     * Registers the subclass of {@link Task} to the serialisation name map.
+     * <p>
+     * If a subclass of {@code Task} is not registered, de/serialisation of the subclass will fail.
+     * 
+     * @param clazz The subclass of {@link Task}.
+     * @param typename The serialised name of {@code clazz}.
+     */
     public static void register(Class<? extends Task> clazz, String typename) {
         if (serialisedTypeNames.containsValue(typename)) throw new IllegalArgumentException();
         serialisedTypeNames.put(clazz, typename);
