@@ -1,17 +1,17 @@
 package mana.command;
 
-import org.junit.jupiter.api.Test;
+import static mana.command.CommandTransformers.DATETIME_TRANSFORMER;
+import static mana.command.CommandTransformers.INDEX_TRANSFORMER;
+import static mana.util.DateTimeUtil.STANDARD_INPUT_FORMAT;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static mana.command.CommandTransformers.DATETIME_TRANSFORMER;
-import static mana.command.CommandTransformers.INDEX_TRANSFORMER;
-import static mana.util.DateTimeUtil.STANDARD_INPUT_FORMAT;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
 
 public class CommandTransformersTest {
     @Test

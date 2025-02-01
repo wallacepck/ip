@@ -1,17 +1,16 @@
 package mana.command;
 
-import mana.ManaException;
-import mana.UserInterface;
-import mana.tasks.Deadline;
-import mana.tasks.Event;
-import mana.tasks.Todo;
-import mana.util.TaskList;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import mana.ManaException;
+import mana.tasks.Deadline;
+import mana.tasks.Event;
+import mana.tasks.Todo;
+import mana.util.TaskList;
 
 public class CommandParser {
     private static final Map<String, Command<TaskList>> commandMap = new HashMap<>();

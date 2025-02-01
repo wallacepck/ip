@@ -1,12 +1,21 @@
 package mana.storage;
 
-import mana.tasks.Task;
-import com.google.gson.*;
-
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+
+import mana.tasks.Task;
 
 public class TaskTypeAdapter implements JsonSerializer<Task>, JsonDeserializer<Task> {
     private static final Gson gson = new GsonBuilder()

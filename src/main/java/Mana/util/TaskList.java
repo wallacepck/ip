@@ -1,10 +1,10 @@
 package mana.util;
 
-import mana.tasks.Task;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
+
+import mana.tasks.Task;
 
 public class TaskList {
     private String title;

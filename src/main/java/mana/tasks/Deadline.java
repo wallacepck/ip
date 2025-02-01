@@ -1,8 +1,8 @@
 package mana.tasks;
 
-import mana.util.DateTimeUtil;
-
 import java.time.LocalDateTime;
+
+import mana.util.DateTimeUtil;
 
 public class Deadline extends Task {
     protected LocalDateTime by;

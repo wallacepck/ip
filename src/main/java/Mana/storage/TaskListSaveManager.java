@@ -1,11 +1,5 @@
 package mana.storage;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import mana.tasks.Task;
-import mana.util.TaskList;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -15,6 +9,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import mana.tasks.Task;
+import mana.util.TaskList;
 
 public class TaskListSaveManager {
     private static final String[] FILE_PATH = {"data", "tasks.json"};

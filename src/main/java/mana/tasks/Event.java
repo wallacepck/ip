@@ -1,8 +1,8 @@
 package mana.tasks;
 
-import mana.util.DateTimeUtil;
-
 import java.time.LocalDateTime;
+
+import mana.util.DateTimeUtil;
 
 /**
  * Not to be confused with events used in observer design pattern

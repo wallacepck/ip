@@ -1,15 +1,14 @@
 package mana.command;
 
-import mana.ManaException;
-import mana.tasks.Deadline;
-import mana.util.DateTimeUtil;
-import mana.util.TaskList;
-
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import mana.ManaException;
+import mana.util.DateTimeUtil;
+import mana.util.TaskList;
 
 public class CommandTransformers {
     public static final Function<List<String>, Object> INDEX_TRANSFORMER = (words) -> {
