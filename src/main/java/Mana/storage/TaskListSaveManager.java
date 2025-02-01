@@ -1,9 +1,9 @@
 package mana.storage;
 
-import mana.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import mana.tasks.Task;
 import mana.util.TaskList;
 
 import java.io.BufferedReader;
@@ -15,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.List;
 
 public class TaskListSaveManager {
     private static final String[] FILE_PATH = {"data", "tasks.json"};
@@ -32,7 +31,7 @@ public class TaskListSaveManager {
 
         TaskList data = null;
         try (BufferedReader reader = Files.newBufferedReader(resourcePath)) {
-            data = gson.fromJson(reader, new TypeToken<List<Task>>() {}.getType());    
+            data = gson.fromJson(reader, new TypeToken<TaskList>() {}.getType());    
         }
         
         return data;

@@ -2,12 +2,17 @@ package mana.util;
 
 import mana.tasks.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
 public class TaskList {
     private String title;
     List<Task> tasks;
+
+    public TaskList() {
+        this("Tasks", new ArrayList<>());
+    }
     
     public TaskList(String title, List<Task> tasks) {
         this.title = title;
@@ -21,6 +26,10 @@ public class TaskList {
     public Task remove(int index) {
         return tasks.remove(index);
     }
+    
+    public void setDone(int index, boolean done) {
+        tasks.get(index).setDone(done);
+    }
 
     public String getTitle() {
         return title;
@@ -33,9 +42,9 @@ public class TaskList {
     @Override
     public String toString() {
         StringJoiner builder = new StringJoiner("\n");
-        builder.add(title);
+        builder.add(title + ": ");
         for (int i = 0; i < tasks.size(); i++) {
-            builder.add(String.format("%d.%s\n", i, tasks.get(i).toString()));
+            builder.add(String.format("%d.%s", i, tasks.get(i).toString()));
         }
         return builder.toString();
     }
