@@ -64,6 +64,8 @@ public class Mana {
             } catch (IOException e) {
                 UserInterface.println("Oh no! It seems Mana can't save your task list, please contact technical support!");
             }
+
+            UserInterface.printBye();
         }
     }
 }
