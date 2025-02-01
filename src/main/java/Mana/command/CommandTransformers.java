@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+/**
+ * Transformers transform arguments into valid Command parameters
+ */
 public class CommandTransformers {
     public static final Function<List<String>, Object> INDEX_TRANSFORMER = (words) -> {
         if (words.size() != 1) {
