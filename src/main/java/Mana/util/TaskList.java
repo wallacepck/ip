@@ -3,9 +3,10 @@ package mana.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import mana.tasks.Task;
-
 
 /**
  * Wrapper class for a list of {@link Task}
@@ -45,6 +46,23 @@ public class TaskList {
      */
     public void setDone(int index, boolean done) {
         tasks.get(index).setDone(done);
+    }
+
+    public List<ImmutablePair<Integer, Task>> find(String substring) {
+        List<ImmutablePair<Integer, Task>> matches = new ArrayList<>();
+        Pattern p = Pattern.compile(substring);
+        for (int i = 0; i < tasks.size(); i++) {
+            boolean match = false;
+            String title = tasks.get(i).getTitle();
+            if (title.length() < 32) {
+                match = title.indexOf(substring) > 0;
+            } else {
+                Matcher m = p.matcher(title);
+                match = m.find();
+            }
+            if (match) matches.add(ImmutablePair.of(i, tasks.get(i)));
+        }
+        return matches;
     }
 
     public String getTitle() {

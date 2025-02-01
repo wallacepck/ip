@@ -54,7 +54,7 @@ public class Mana {
                 Command.CommandResult result = CommandParser.parseAndExecute(tasks, words);
                 if (result == Command.CommandResult.EXIT) {
                     break;
-                } else {
+                } else if (result != Command.CommandResult.OK_SILENT) {
                     UserInterface.println(tasks.toString());
                 }
             } catch (ManaException e) {
@@ -66,8 +66,8 @@ public class Mana {
             } catch (IOException e) {
                 UserInterface.println("Oh no! It seems Mana can't save your task list, please contact technical support!");
             }
-
-            UserInterface.printBye();
         }
+
+        UserInterface.printBye();
     }
 }
