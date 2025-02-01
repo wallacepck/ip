@@ -8,7 +8,6 @@ import mana.util.TaskList;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
 
 public class Mana {
     UserInterface ui;
@@ -52,7 +51,7 @@ public class Mana {
                 Command.CommandResult result = CommandParser.parseAndExecute(tasks, words);
                 if (result == Command.CommandResult.EXIT) {
                     break;
-                } else {
+                } else if (result != Command.CommandResult.OK_SILENT) {
                     UserInterface.println(tasks.toString());
                 }
             } catch (ManaException e) {
@@ -64,8 +63,8 @@ public class Mana {
             } catch (IOException e) {
                 UserInterface.println("Oh no! It seems Mana can't save your task list, please contact technical support!");
             }
-
-            UserInterface.printBye();
         }
+
+        UserInterface.printBye();
     }
 }

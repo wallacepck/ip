@@ -12,6 +12,7 @@ public class Command<T> {
     public static final String EMPTY_KEYWORD = "";
     public enum CommandResult {
         OK,
+        OK_SILENT,
         ERROR,
         EXIT
     }
