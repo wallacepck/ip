@@ -1,4 +1,4 @@
-package mana.io;
+package mana.storage;
 
 import mana.tasks.Task;
 import com.google.gson.*;

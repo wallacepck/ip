@@ -1,6 +1,6 @@
 package mana.tasks;
 
-import mana.io.TaskTypeAdapter;
+import mana.storage.TaskTypeAdapter;
 
 public class TaskRegistrar {
     public static void register() {
