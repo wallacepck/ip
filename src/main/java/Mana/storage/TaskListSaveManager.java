@@ -1,9 +1,10 @@
 package mana.storage;
 
-import mana.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import mana.tasks.Task;
+import mana.util.TaskList;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.List;
 
 public class TaskListSaveManager {
     private static final String[] FILE_PATH = {"data", "tasks.json"};
@@ -23,21 +23,21 @@ public class TaskListSaveManager {
             .setPrettyPrinting()
             .create();
     
-    public static List<Task> loadFromFile() throws IOException {
+    public static TaskList loadFromFile() throws IOException {
         Path resourcePath = Paths.get(".", FILE_PATH);
         
         if (!Files.exists(resourcePath)) throw new FileNotFoundException(
                 String.format("Task data file not found at %s!", resourcePath));
 
-        List<Task> data = null;
+        TaskList data = null;
         try (BufferedReader reader = Files.newBufferedReader(resourcePath)) {
-            data = gson.fromJson(reader, new TypeToken<List<Task>>() {}.getType());    
+            data = gson.fromJson(reader, new TypeToken<TaskList>() {}.getType());    
         }
         
         return data;
     }
     
-    public static void saveToFile(List<Task> data) throws IOException {
+    public static void saveToFile(TaskList taskList) throws IOException {
         Path resourcePath = Paths.get(".", FILE_PATH);
 
         if (!Files.exists(resourcePath)) {
@@ -48,9 +48,7 @@ public class TaskListSaveManager {
         try (BufferedWriter writer = Files.newBufferedWriter(resourcePath,
                 Charset.defaultCharset(),
                 StandardOpenOption.TRUNCATE_EXISTING)) {
-            writer.write(gson.toJson(data));
+            writer.write(gson.toJson(taskList));
         }
-
-        return;
     }   
 }
