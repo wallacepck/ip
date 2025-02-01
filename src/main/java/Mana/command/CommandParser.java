@@ -4,7 +4,9 @@ import mana.ManaException;
 import mana.UserInterface;
 import mana.tasks.Deadline;
 import mana.tasks.Event;
+import mana.tasks.Task;
 import mana.tasks.Todo;
+import mana.util.ImmutablePair;
 import mana.util.TaskList;
 
 import java.time.LocalDateTime;
@@ -64,6 +66,18 @@ public class CommandParser {
                 .withAction((tasklist, args) -> {
                     tasklist.remove((Integer) args.get(Command.EMPTY_KEYWORD));
                     return Command.CommandResult.OK;
+                })
+        );
+
+        commandMap.put("find", new Command<TaskList>("find")
+                .withParameterTransform(CommandTransformers.GREEDY_STRING_JOIN_TRANSFORMER)
+                .withAction((tasklist, args) -> {
+                    List<ImmutablePair<Integer, Task>> found = tasklist.find((String) args.get(Command.EMPTY_KEYWORD));
+                    UserInterface.println("Found the following matches: ");
+                    for (ImmutablePair<Integer, Task> pair : found) {
+                        UserInterface.println(String.format("%d.%s", pair.first, pair.second));
+                    }
+                    return Command.CommandResult.OK_SILENT;
                 })
         );
     }
