@@ -7,6 +7,7 @@ import mana.tasks.Task;
 import mana.tasks.TaskRegistrar;
 import mana.tasks.Todo;
 import mana.util.DateTimeUtil;
+import mana.util.TaskList;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class Mana {
         System.out.println(BAR);
         System.out.println("Hello! Its me, \n" + logo + "What's up?");
 
-        List<Task> tasks = null;
+        TaskList tasks = null;
         try {
             tasks = TaskListSaveManager.loadFromFile();
         } catch (IOException e) {
