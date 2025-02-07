@@ -13,24 +13,24 @@ import mana.tasks.Task;
  */
 public class TaskList {
     private String title;
-    List<Task> tasks;
+    private List<Task> tasks;
 
     public TaskList() {
         this("Tasks", new ArrayList<>());
     }
-    
+
     public TaskList(String title, List<Task> tasks) {
         this.title = title;
         this.tasks = tasks;
     }
-    
+
     public void add(Task t) {
         tasks.add(t);
     }
 
     /**
      * Removes the task at {@code index}.
-     * 
+     *
      * @param index The index of the task to remove.
      * @return The Task previously at this index.
      */
@@ -40,7 +40,7 @@ public class TaskList {
 
     /**
      * Wrapper function for {@link Task#setDone(boolean)}.
-     * 
+     *
      * @param index Index of task to set.
      * @param done Whether the task is done.
      */
@@ -60,7 +60,9 @@ public class TaskList {
                 Matcher m = p.matcher(title);
                 match = m.find();
             }
-            if (match) matches.add(ImmutablePair.of(i, tasks.get(i)));
+            if (match) {
+                matches.add(ImmutablePair.of(i, tasks.get(i)));
+            }
         }
         return matches;
     }

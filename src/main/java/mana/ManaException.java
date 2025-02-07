@@ -4,7 +4,7 @@ public class ManaException extends RuntimeException {
     public ManaException() {
         super();
     }
-    
+
     public ManaException(String msg) {
         super(msg);
     }

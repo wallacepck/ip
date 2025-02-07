@@ -9,10 +9,10 @@ public class DateTimeUtil {
      * The standard format for datetime input parsing
      */
     public static final String STANDARD_INPUT_FORMAT = "dd-MM-yyyy";
-    
+
     /**
      * Parses {@code string} into a {@link LocalDateTime} using the {@link #STANDARD_INPUT_FORMAT}.
-     * 
+     *
      * @param string Input string.
      * @return Parsed {@link LocalDateTime}.
      */
@@ -22,7 +22,7 @@ public class DateTimeUtil {
 
     /**
      * Prints {@code dateTime} into a standard pretty format.
-     * 
+     *
      * @param dateTime date time to print.
      * @return Pretty formatted print of {@code dateTime}.
      */

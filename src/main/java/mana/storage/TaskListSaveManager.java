@@ -29,27 +29,29 @@ public class TaskListSaveManager {
 
     /**
      * Attempts to load a {@link TaskList} from the {@link #FILE_PATH}.
-     * 
+     *
      * @return The TaskList loaded from file.
-     * @throws IOException if an error occurred while reading the file. 
+     * @throws IOException if an error occurred while reading the file.
      */
     public static TaskList loadFromFile() throws IOException {
         Path resourcePath = Paths.get(".", FILE_PATH);
-        
-        if (!Files.exists(resourcePath)) throw new FileNotFoundException(
-                String.format("Task data file not found at %s!", resourcePath));
+
+        if (!Files.exists(resourcePath)) {
+            throw new FileNotFoundException(
+                    String.format("Task data file not found at %s!", resourcePath));
+        }
 
         TaskList data = null;
         try (BufferedReader reader = Files.newBufferedReader(resourcePath)) {
-            data = gson.fromJson(reader, new TypeToken<TaskList>() {}.getType());    
+            data = gson.fromJson(reader, new TypeToken<TaskList>() {}.getType());
         }
-        
+
         return data;
     }
 
     /**
      * Saves the {@code taskList} to {@link #FILE_PATH}.
-     * 
+     *
      * @param taskList The TaskList to save.
      * @throws IOException if an error occurred while writing the file.
      */
@@ -66,5 +68,5 @@ public class TaskListSaveManager {
                 StandardOpenOption.TRUNCATE_EXISTING)) {
             writer.write(gson.toJson(taskList));
         }
-    }   
+    }
 }

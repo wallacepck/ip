@@ -1,12 +1,12 @@
 package mana.command;
 
-import mana.ManaException;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import mana.ManaException;
 
 /**
  * Represents a Command with parameters, and a single action on a target object
@@ -26,7 +26,7 @@ public class Command<T> {
     public final String name;
     private final Map<String, Function<List<String>, Object>> parameters;
     private BiFunction<T, Map<String, Object>, CommandResult> action;
-    
+
     public Command(String name) {
         this.name = name;
         this.parameters = new HashMap<>();
@@ -34,9 +34,9 @@ public class Command<T> {
 
     /**
      * Adds a parameter to this command.
-     * 
+     *
      * @param keyword The keyword for this parameter.
-     * @param transformer converts the given argument to a valid argument that this command can use. 
+     * @param transformer converts the given argument to a valid argument that this command can use.
      * @return Itself.
      * @throws IllegalArgumentException If the command already has this parameter.
      */
@@ -47,11 +47,11 @@ public class Command<T> {
         parameters.put(keyword, transformer);
         return this;
     }
-    
+
     /**
      * Adds a transformer to the default {@link #EMPTY_KEYWORD} for this command.
-     * 
-     * @param transformer converts the given argument to a valid argument that this command can use. 
+     *
+     * @param transformer converts the given argument to a valid argument that this command can use.
      * @return Itself.
      * @throws IllegalArgumentException If the command already has a transformer for the default keyword.
      */
@@ -61,7 +61,7 @@ public class Command<T> {
 
     /**
      * Assigns this command the given action.
-     * 
+     *
      * @param action The action to use on the target object of type {@code T}.
      * @return Itself.
      */
@@ -72,12 +72,10 @@ public class Command<T> {
 
     /**
      * Executes this command given the target and arguments.
-     * 
-     * @param target Target object of action. 
+     *
+     * @param target Target object of action.
      * @param args Parsed argument map.
-     * @return {@link CommandResult#OK} if successful, else 
-     * <p> 
-     * {@link CommandResult#EXIT} if the program should exit.
+     * @return {@link CommandResult#OK} if successful, else {@link CommandResult#EXIT} if the program should exit.
      */
     public CommandResult execute(T target, Map<String, List<String>> args) {
         Map<String, Object> transformedArgs = new HashMap<>();

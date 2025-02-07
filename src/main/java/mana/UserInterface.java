@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class UserInterface {
     private static final String BAR = "____________________________________________________________";
     private final Scanner reader;
-    
+
     public UserInterface() {
         this.reader = new Scanner(System.in);
         printGreet();
@@ -14,7 +14,7 @@ public class UserInterface {
 
     /**
      * Reads a line from {@code Scanner} input {@link #reader}.
-     * 
+     *
      * @return the next line from {@link #reader}.
      */
     public String readLine() {
@@ -49,7 +49,7 @@ public class UserInterface {
 
     /**
      * Prints {@code s} and advances to the next line.
-     * 
+     *
      * @param s The string to print.
      */
     public static void println(String s) {

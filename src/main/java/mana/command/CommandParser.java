@@ -24,7 +24,7 @@ public class CommandParser {
     static {
         commandMap.put("exit", new Command<TaskList>("exit").withAction((t, m) -> Command.CommandResult.EXIT));
         commandMap.put("list", new Command<TaskList>("list").withAction((t, m) -> Command.CommandResult.OK));
-         
+
         commandMap.put("done", new Command<TaskList>("done")
                 .withParameterTransform(CommandTransformers.INDEX_TRANSFORMER)
                 .withAction(CommandTransformers.DONE_ACTION.apply(true))
@@ -33,7 +33,7 @@ public class CommandParser {
                 .withParameterTransform(CommandTransformers.INDEX_TRANSFORMER)
                 .withAction(CommandTransformers.DONE_ACTION.apply(false))
         );
-        
+
         commandMap.put("todo", new Command<TaskList>("todo")
                 .withParameterTransform(CommandTransformers.GREEDY_STRING_JOIN_TRANSFORMER)
                 .withAction((tasklist, args) -> {
@@ -45,7 +45,7 @@ public class CommandParser {
                 .withParameterTransform(CommandTransformers.GREEDY_STRING_JOIN_TRANSFORMER)
                 .withParameterTransform("by", CommandTransformers.DATETIME_TRANSFORMER)
                 .withAction((tasklist, args) -> {
-                    tasklist.add(new Deadline((String) args.get(Command.EMPTY_KEYWORD), 
+                    tasklist.add(new Deadline((String) args.get(Command.EMPTY_KEYWORD),
                             (LocalDateTime) args.get("by"))
                     );
                     return Command.CommandResult.OK;
@@ -56,7 +56,7 @@ public class CommandParser {
                 .withParameterTransform("from", CommandTransformers.DATETIME_TRANSFORMER)
                 .withParameterTransform("to", CommandTransformers.DATETIME_TRANSFORMER)
                 .withAction((tasklist, args) -> {
-                    tasklist.add(new Event((String) args.get(Command.EMPTY_KEYWORD), 
+                    tasklist.add(new Event((String) args.get(Command.EMPTY_KEYWORD),
                             (LocalDateTime) args.get("from"),
                             (LocalDateTime) args.get("to"))
                     );
@@ -87,13 +87,15 @@ public class CommandParser {
 
     /**
      * Parses the word list into an argument map and executes the command on the {@code taskList}.
-     * 
+     *
      * @param taskList The {@link TaskList} the command should operate on.
      * @param words The word array from the command line input.
      * @return See: {@link Command#execute(Object, Map)}.
      */
     public static Command.CommandResult parseAndExecute(TaskList taskList, String[] words) {
-        if (words.length == 0) return Command.CommandResult.OK;
+        if (words.length == 0) {
+            return Command.CommandResult.OK;
+        }
         if (commandMap.containsKey(words[0])) {
             Map<String, List<String>> args = new HashMap<>();
             String currentKeyword = Command.EMPTY_KEYWORD;
@@ -105,7 +107,7 @@ public class CommandParser {
                     args.computeIfAbsent(currentKeyword, k -> new ArrayList<>()).add(s);
                 }
             }
-            
+
             return commandMap.get(words[0]).execute(taskList, args);
         } else {
             throw new ManaException("No such command: %s", words[0]);

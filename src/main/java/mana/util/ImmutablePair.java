@@ -7,8 +7,8 @@ public class ImmutablePair<T, U> {
         first = t;
         second = u;
     }
-    
-    public static <T,U> ImmutablePair<T,U> of(T t, U u) {
+
+    public static <T, U> ImmutablePair<T, U> of(T t, U u) {
         return new ImmutablePair<>(t, u);
     }
 

@@ -31,16 +31,18 @@ public class TaskTypeAdapter implements JsonSerializer<Task>, JsonDeserializer<T
      * Registers the subclass of {@link Task} to the serialisation name map.
      * <p>
      * If a subclass of {@code Task} is not registered, de/serialisation of the subclass will fail.
-     * 
+     *
      * @param clazz The subclass of {@link Task}.
      * @param typename The serialised name of {@code clazz}.
      */
     public static void register(Class<? extends Task> clazz, String typename) {
-        if (serialisedTypeNames.containsValue(typename)) throw new IllegalArgumentException();
+        if (serialisedTypeNames.containsValue(typename)) {
+            throw new IllegalArgumentException();
+        }
         serialisedTypeNames.put(clazz, typename);
         deserialisedTypes.put(typename, clazz);
     }
-    
+
     @Override
     public JsonElement serialize(Task src, Type typeOfSrc, JsonSerializationContext context) {
         if (!serialisedTypeNames.containsKey(src.getClass())) {
@@ -52,15 +54,18 @@ public class TaskTypeAdapter implements JsonSerializer<Task>, JsonDeserializer<T
     }
 
     @Override
-    public Task deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public Task deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
         String typeName = jsonObject.get("type").getAsString();
 
-        if (deserialisedTypes.containsKey(typeName)){
+        if (deserialisedTypes.containsKey(typeName)) {
             Class<? extends Task> clazz = deserialisedTypes.get(typeName);
             return gson.fromJson(json, clazz);
         } else {
-            throw new JsonParseException(String.format("Cannot find Task of type %s", typeName), new ClassNotFoundException());
+            throw new JsonParseException(String.format("Cannot find Task of type %s", typeName),
+                    new ClassNotFoundException()
+            );
         }
     }
 }
