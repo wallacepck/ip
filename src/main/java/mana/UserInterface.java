@@ -1,24 +1,17 @@
 package mana;
 
 import java.io.IOException;
-import java.util.Scanner;
+
+import mana.ui.GuiController;
 
 public class UserInterface {
-    private static final String BAR = "____________________________________________________________";
-    private final Scanner reader;
+    private static GuiController gui;
 
     public UserInterface() {
-        this.reader = new Scanner(System.in);
+        if (gui == null) {
+            gui = GuiController.getInstance();
+        }
         printGreet();
-    }
-
-    /**
-     * Reads a line from {@code Scanner} input {@link #reader}.
-     *
-     * @return the next line from {@link #reader}.
-     */
-    public String readLine() {
-        return reader.nextLine();
     }
 
     /**
@@ -35,34 +28,23 @@ public class UserInterface {
                  \n
                 """;
 
-        printBar();
-        System.out.println("Hello! Its me, \n" + logo + "Here is your task list,");
+        print("Hello! Its me, \n" + logo + "Here is your task list,");
     }
 
     /**
      * Sends a farewell message to the user.
      */
     public static void printBye() {
-        System.out.println("Bye!");
-        printBar();
+        print("Bye!");
     }
 
     /**
-     * Prints {@code s} and advances to the next line.
-     *
-     * @param s The string to print.
-     */
-    public static void println(String s) {
-        System.out.println(s);
-    }
-
-    /**
-     * Prints {@code s}.
+     * Prints {@code s} in a dialog box.
      *
      * @param s The string to print.
      */
     public static void print(String s) {
-        System.out.print(s);
+        gui.addRespondDialog(s);
     }
 
 
@@ -72,10 +54,12 @@ public class UserInterface {
      * @param e The error occurred during file load.
      */
     public static void loadErr(IOException e) {
-        UserInterface.println("Oh no! Mana could not open your save file :(");
-        UserInterface.println("If you still wish to start the program, move the file elsewhere!");
-        UserInterface.println("Here is the detailed error log for technical support:");
-        UserInterface.println(e.getLocalizedMessage());
+        UserInterface.print("""
+        Oh no! Mana could not open your save file :(
+        If you still wish to start the program, move the file elsewhere!
+        Here is the detailed error log for technical support
+        """ + e.getLocalizedMessage()
+        );
     }
 
     /**
@@ -84,13 +68,13 @@ public class UserInterface {
      * @param e The error occurred during command parsing or execution.
      */
     public static void commandErr(ManaException e) {
-        System.out.println("Failed to execute command: " + e.getMessage());
+        print("Failed to execute command: " + e.getMessage());
     }
 
     /**
-     * Prints a standard issue horizontal {@link #BAR bar}.
+     * add user dialog box to dialog container
      */
-    public static void printBar() {
-        System.out.println(BAR);
+    public void addUserDialog() {
+        gui.addUserDialog();
     }
 }

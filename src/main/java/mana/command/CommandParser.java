@@ -76,10 +76,12 @@ public class CommandParser {
                 .withParameterTransform(CommandTransformers.GREEDY_STRING_JOIN_TRANSFORMER)
                 .withAction((tasklist, args) -> {
                     List<ImmutablePair<Integer, Task>> found = tasklist.find((String) args.get(Command.EMPTY_KEYWORD));
-                    UserInterface.println("Found the following matches: ");
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("Found the following matches: \n");
                     for (ImmutablePair<Integer, Task> pair : found) {
-                        UserInterface.println(String.format("%d.%s", pair.first, pair.second));
+                        builder.append(String.format("%d.%s\n", pair.first, pair.second));
                     }
+                    UserInterface.print(builder.toString());
                     return Command.CommandResult.OK_SILENT;
                 })
         );
