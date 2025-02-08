@@ -3,10 +3,15 @@ package mana;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javafx.application.Application;
+import javafx.application.Platform;
 import mana.command.Command;
 import mana.command.CommandParser;
 import mana.storage.TaskListSaveManager;
 import mana.tasks.TaskRegistrar;
+import mana.ui.DelayedExit;
+import mana.ui.GuiController;
+import mana.ui.ManaApplication;
 import mana.util.TaskList;
 
 public class Mana {
@@ -15,21 +20,19 @@ public class Mana {
 
     public static void main(String[] args) {
         TaskRegistrar.register();
-        Mana agent = new Mana();
-        agent.run();
+        Application.launch(ManaApplication.class, args);
     }
 
-    /**
-     * Main running logic of Mana
-     */
-    private void run() {
+    public Mana() {
+        GuiController.getInstance().setMana(this);
         ui = new UserInterface();
+
         try {
             tasks = TaskListSaveManager.loadFromFile();
         } catch (IOException e) {
             if (!(e instanceof FileNotFoundException)) {
                 UserInterface.loadErr(e);
-                return;
+                Platform.exit();
             }
         } finally {
             if (tasks == null) {
@@ -37,45 +40,41 @@ public class Mana {
             }
         }
 
-        boolean repeatInput = false;
+        UserInterface.print(tasks.toString());
+    }
 
-        UserInterface.println(tasks.toString());
-        // Main loop
-        while (true) {
-            System.out.print("> ");
-            String rawInput = ui.readLine();
-            if (rawInput.equals("testmode")) {
-                repeatInput = true;
-                rawInput = ui.readLine();
-            }
-            if (repeatInput) {
-                System.out.println(rawInput);
-            }
-            String[] words = rawInput.split(" ");
-            if (words.length == 0) {
-                continue;
-            }
-
-            try {
-                Command.CommandResult result = CommandParser.parseAndExecute(tasks, words);
-                if (result == Command.CommandResult.EXIT) {
-                    break;
-                } else if (result != Command.CommandResult.OK_SILENT) {
-                    UserInterface.println(tasks.toString());
-                }
-            } catch (ManaException e) {
-                UserInterface.commandErr(e);
-            }
-
-            try {
-                TaskListSaveManager.saveToFile(tasks);
-            } catch (IOException e) {
-                UserInterface.println("Oh no! It seems Mana can't save your task list, "
-                        + "please contact technical support!"
-                );
-            }
+    /**
+     * Start of logical processing of user input
+     */
+    public void handleUserInput(String rawInput) {
+        if (DelayedExit.isPendingExit()) {
+            return;
         }
 
-        UserInterface.printBye();
+        String[] words = rawInput.split(" ");
+        if (words.length == 0) {
+            return;
+        }
+        ui.addUserDialog();
+
+        try {
+            Command.CommandResult result = CommandParser.parseAndExecute(tasks, words);
+            if (result == Command.CommandResult.EXIT) {
+                UserInterface.printBye();
+                DelayedExit.exit(3000);
+            } else if (result != Command.CommandResult.OK_SILENT) {
+                UserInterface.print(tasks.toString());
+            }
+        } catch (ManaException e) {
+            UserInterface.commandErr(e);
+        }
+
+        try {
+            TaskListSaveManager.saveToFile(tasks);
+        } catch (IOException e) {
+            UserInterface.print("Oh no! It seems Mana can't save your task list, "
+                    + "please contact technical support!"
+            );
+        }
     }
 }
