@@ -54,6 +54,7 @@ public class TaskList {
         for (int i = 0; i < tasks.size(); i++) {
             boolean match = false;
             String title = tasks.get(i).getTitle();
+            assert title != null : "Found a null Task title!";
             if (title.length() < 32) {
                 match = title.indexOf(substring) > 0;
             } else {
