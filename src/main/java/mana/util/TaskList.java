@@ -2,6 +2,7 @@ package mana.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
@@ -53,6 +54,7 @@ public class TaskList {
         return IntStream.range(0, tasks.size())
                 .mapToObj(i -> ImmutablePair.of(i, tasks.get(i)))
                 .filter(idxTask -> idxTask.second != null)
+                .peek(idxTask -> Objects.requireNonNull(idxTask.second.getTitle()))
                 .filter(idxTask -> p.matcher(idxTask.second.getTitle()).find())
                 .toList();
     }
