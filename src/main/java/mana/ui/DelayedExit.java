@@ -10,7 +10,7 @@ import javafx.application.Platform;
  */
 public class DelayedExit extends TimerTask {
     private static boolean isPendingExit = false;
-    private static final Timer timer = new Timer();
+    private static final Timer timer = new Timer(true);
 
     private DelayedExit() {}
 
