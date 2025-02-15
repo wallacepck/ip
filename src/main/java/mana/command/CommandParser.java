@@ -1,5 +1,6 @@
 package mana.command;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import mana.ManaException;
 import mana.UserInterface;
+import mana.storage.TaskListSaveManager;
 import mana.tasks.Deadline;
 import mana.tasks.Event;
 import mana.tasks.Task;
@@ -24,6 +26,20 @@ public class CommandParser {
     static {
         commandMap.put("exit", new Command<TaskList>("exit").withAction((t, m) -> Command.CommandResult.EXIT));
         commandMap.put("list", new Command<TaskList>("list").withAction((t, m) -> Command.CommandResult.OK));
+
+        commandMap.put("load", new Command<TaskList>("load")
+                .withParameterTransform(CommandTransformers.SINGLE_WORD_TRANSFORMER)
+                .withAction((tasklist, args) -> {
+                    String filename = (String) args.get(Command.EMPTY_KEYWORD);
+                    try {
+                        tasklist.replaceWith(TaskListSaveManager.loadFromFile(filename));
+                    } catch (IOException e) {
+                        throw new ManaException("Cannot load from %s due to %s", filename, e.getLocalizedMessage());
+                    }
+
+                    return Command.CommandResult.OK;
+                })
+        );
 
         commandMap.put("done", new Command<TaskList>("done")
                 .withParameterTransform(CommandTransformers.INDEX_TRANSFORMER)

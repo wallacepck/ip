@@ -26,6 +26,15 @@ public class CommandTransformers {
         }
     };
 
+    public static final Function<List<String>, Object> SINGLE_WORD_TRANSFORMER = (words) -> {
+        if (words.isEmpty()) {
+            throw new ManaException("Argument is empty!");
+        } else if (words.size() > 1) {
+            throw new ManaException("Expected one word, found %s", words.size());
+        }
+        return words.get(0);
+    };
+
     public static final Function<List<String>, Object> GREEDY_STRING_JOIN_TRANSFORMER = (words) -> {
         if (words.isEmpty()) {
             throw new ManaException("Argument is empty!");

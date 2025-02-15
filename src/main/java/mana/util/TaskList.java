@@ -49,6 +49,18 @@ public class TaskList {
         tasks.get(index).setDone(done);
     }
 
+    /**
+     * Destroys the current {@link Task}s in this TaskList and replaces it with the {@link Task}s from
+     * {@code otherList}. Also changes this title to the title in {@code otherList}.
+     *
+     * @param otherList the list to take replacements from
+     */
+    public void replaceWith(TaskList otherList) {
+        this.title = otherList.title;
+        this.tasks.clear();
+        this.tasks.addAll(otherList.tasks);
+    }
+
     public List<ImmutablePair<Integer, Task>> find(String substring) {
         Pattern p = Pattern.compile(substring);
         return IntStream.range(0, tasks.size())
