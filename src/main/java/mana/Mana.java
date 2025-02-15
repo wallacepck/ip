@@ -47,6 +47,7 @@ public class Mana {
      * Start of logical processing of user input
      */
     public void handleUserInput(String rawInput) {
+        assert rawInput != null : "Given input string should not be null!";
         if (DelayedExit.isPendingExit()) {
             return;
         }
