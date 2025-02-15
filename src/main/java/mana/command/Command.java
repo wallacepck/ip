@@ -78,17 +78,29 @@ public class Command<T> {
      * @return {@link CommandResult#OK} if successful, else {@link CommandResult#EXIT} if the program should exit.
      */
     public CommandResult execute(T target, Map<String, List<String>> args) {
+        Map<String, Object> transformedArgs = this.transformArguments(args);
+        return action.apply(target, transformedArgs);
+    }
+
+    /**
+     * Transforms the given arguments into the form accepted by this command
+     *
+     * @return A map containing the transformed arguments. Never null, but may be empty.
+     */
+    public Map<String, Object> transformArguments(Map<String, List<String>> args) {
         Map<String, Object> transformedArgs = new HashMap<>();
-        if (!parameters.isEmpty()) {
-            for (Map.Entry<String, List<String>> arg : args.entrySet()) {
-                if (parameters.containsKey(arg.getKey())) {
-                    transformedArgs.put(arg.getKey(), parameters.get(arg.getKey()).apply(arg.getValue()));
-                } else {
-                    throw new ManaException("No such keyword %s", arg.getKey());
-                }
+        if (parameters.isEmpty()) {
+            return transformedArgs;
+        }
+
+        for (Map.Entry<String, List<String>> arg : args.entrySet()) {
+            if (parameters.containsKey(arg.getKey())) {
+                transformedArgs.put(arg.getKey(), parameters.get(arg.getKey()).apply(arg.getValue()));
+            } else {
+                throw new ManaException("No such keyword %s", arg.getKey());
             }
         }
 
-        return action.apply(target, transformedArgs);
+        return transformedArgs;
     }
 }
