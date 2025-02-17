@@ -31,6 +31,9 @@ public class CommandParser {
                 .withParameterTransform(CommandTransformers.SINGLE_WORD_TRANSFORMER)
                 .withAction((tasklist, args) -> {
                     String filename = (String) args.get(Command.EMPTY_KEYWORD);
+                    if (filename == null) {
+                        throw new ManaException("File name is empty!");
+                    }
                     try {
                         tasklist.replaceWith(TaskListSaveManager.loadFromFile(filename));
                     } catch (IOException e) {
@@ -53,7 +56,12 @@ public class CommandParser {
         commandMap.put("todo", new Command<TaskList>("todo")
                 .withParameterTransform(CommandTransformers.GREEDY_STRING_JOIN_TRANSFORMER)
                 .withAction((tasklist, args) -> {
-                    tasklist.add(new Todo((String) args.get(Command.EMPTY_KEYWORD)));
+                    String title = (String) args.get(Command.EMPTY_KEYWORD);
+                    if (title == null) {
+                        throw new ManaException("Title is empty!");
+                    }
+
+                    tasklist.add(new Todo(title));
                     return Command.CommandResult.OK;
                 })
         );
@@ -61,8 +69,16 @@ public class CommandParser {
                 .withParameterTransform(CommandTransformers.GREEDY_STRING_JOIN_TRANSFORMER)
                 .withParameterTransform("by", CommandTransformers.DATETIME_TRANSFORMER)
                 .withAction((tasklist, args) -> {
-                    tasklist.add(new Deadline((String) args.get(Command.EMPTY_KEYWORD),
-                            (LocalDateTime) args.get("by"))
+                    String title = (String) args.get(Command.EMPTY_KEYWORD);
+                    if (title == null) {
+                        throw new ManaException("Title is empty!");
+                    }
+                    LocalDateTime deadlineDate = (LocalDateTime) args.get("by");
+                    if (deadlineDate == null) {
+                        throw new ManaException("Deadline date is empty!");
+                    }
+
+                    tasklist.add(new Deadline(title, deadlineDate)
                     );
                     return Command.CommandResult.OK;
                 })
@@ -72,9 +88,20 @@ public class CommandParser {
                 .withParameterTransform("from", CommandTransformers.DATETIME_TRANSFORMER)
                 .withParameterTransform("to", CommandTransformers.DATETIME_TRANSFORMER)
                 .withAction((tasklist, args) -> {
-                    tasklist.add(new Event((String) args.get(Command.EMPTY_KEYWORD),
-                            (LocalDateTime) args.get("from"),
-                            (LocalDateTime) args.get("to"))
+                    String title = (String) args.get(Command.EMPTY_KEYWORD);
+                    if (title == null) {
+                        throw new ManaException("Title is empty!");
+                    }
+                    LocalDateTime fromDate = (LocalDateTime) args.get("from");
+                    if (fromDate == null) {
+                        throw new ManaException("Date from is empty!");
+                    }
+                    LocalDateTime toDate = (LocalDateTime) args.get("to");
+                    if (toDate == null) {
+                        throw new ManaException("Date to is empty!");
+                    }
+
+                    tasklist.add(new Event((String) args.get(Command.EMPTY_KEYWORD), fromDate, toDate)
                     );
                     return Command.CommandResult.OK;
                 })
@@ -83,7 +110,11 @@ public class CommandParser {
         commandMap.put("delete", new Command<TaskList>("delete")
                 .withParameterTransform(CommandTransformers.INDEX_TRANSFORMER)
                 .withAction((tasklist, args) -> {
-                    tasklist.remove((Integer) args.get(Command.EMPTY_KEYWORD));
+                    Integer index = (Integer) args.get(Command.EMPTY_KEYWORD);
+                    if (index == null) {
+                        throw new ManaException("Index is empty!");
+                    }
+                    tasklist.remove(index);
                     return Command.CommandResult.OK;
                 })
         );
@@ -91,7 +122,12 @@ public class CommandParser {
         commandMap.put("find", new Command<TaskList>("find")
                 .withParameterTransform(CommandTransformers.GREEDY_STRING_JOIN_TRANSFORMER)
                 .withAction((tasklist, args) -> {
-                    List<ImmutablePair<Integer, Task>> found = tasklist.find((String) args.get(Command.EMPTY_KEYWORD));
+                    String keyphrase = (String) args.get(Command.EMPTY_KEYWORD);
+                    if (keyphrase == null) {
+                        throw new ManaException("Given text to find is empty!");
+                    }
+
+                    List<ImmutablePair<Integer, Task>> found = tasklist.find(keyphrase);
                     StringBuilder builder = new StringBuilder();
                     builder.append("Found the following matches: \n");
                     for (ImmutablePair<Integer, Task> pair : found) {
