@@ -95,9 +95,12 @@ public class Command<T> {
 
         for (Map.Entry<String, List<String>> arg : args.entrySet()) {
             if (parameters.containsKey(arg.getKey())) {
+                if (transformedArgs.containsKey(arg.getKey())) {
+                    throw new ManaException("Already specified parameter %s as %s!", arg.getKey(), transformedArgs.get(arg.getKey()));
+                }
                 transformedArgs.put(arg.getKey(), parameters.get(arg.getKey()).apply(arg.getValue()));
             } else {
-                throw new ManaException("No such keyword %s", arg.getKey());
+                throw new ManaException("No such parameter %s", arg.getKey());
             }
         }
 
