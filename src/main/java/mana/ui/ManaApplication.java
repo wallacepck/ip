@@ -19,6 +19,7 @@ public class ManaApplication extends javafx.application.Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
+            stage.setTitle("Mana");
             Scene scene = new Scene(ap);
             stage.setScene(scene);
             stage.show();
