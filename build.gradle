@@ -54,7 +54,7 @@ application {
 }
 
 shadowJar {
-    archiveBaseName = "mana"
+    archiveBaseName = "Mana"
     archiveClassifier = null
 }
 
