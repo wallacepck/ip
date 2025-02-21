@@ -6,7 +6,7 @@ author: Wallace, heavily inspired by https://github.com/se-edu/addressbook-level
 
 # Mana User Guide
 
-// Product screenshot goes here
+![Ui.png](Ui.png)
 
 Mana is a **desktop app for managing tasks, optimized for use via a Command Line Interface** (CLI),
 while still having the benefits of a Graphical User Interface (GUI). Its
@@ -37,7 +37,8 @@ while still having the benefits of a Graphical User Interface (GUI). Its
 1. Download the latest `.jar` file from [here](https://github.com/wallacepck/ip/releases)
 1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 2. Open a command terminal, `cd` into the folder you put the jar file in, and use `java -jar mana.jar` command to run the application.<br>
-   A GUI similar to below should appear in a few seconds. Note that there is no data before you use it.
+   A GUI similar to below should appear in a few seconds. Note that there is no data before you use it.<br>
+    ![fresh.png](fresh.png)
 3. Type the command in the command box and press Enter to execute it. Refer to [Features](#features) for a list of the available actions and commands
 
 ------------------------------------------------------------------------------------------------------------------
