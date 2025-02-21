@@ -25,7 +25,7 @@ while still having the benefits of a Graphical User Interface (GUI). Its
   * [Marking tasks `done/undone`](#marking-tasks-as-doneundone-doneundone)
   * [Saving and Loading](#saving--loading)
   * [Loading external files: `load`](#loading-from-other-files-load)
-  * [Exiting the program `bye`](#exiting-bye)
+  * [Exiting the program `exit`](#exiting-exit)
 * [FAQ](#faq)
   
 
@@ -52,7 +52,7 @@ e.g. in `find TEXT`, `TEXT` is a parameter which can be used as `find homework`.
 >* Parameters can be in any order.<br>
  e.g. if the command specifies `--from START_DATE --to END_DATE`, `--to END_DATE --from START_DATE` is also acceptable.
 >
->* Extraneous parameters for commands that do not take in parameters (such as `list`, `bye`) will throw an error.
+>* Extraneous parameters for commands that do not take in parameters (such as `list`, `exit`) will throw an error.
   e.g. if the command `list 123` is given, the program will throw an error.
 
 ### Adding tasks:
@@ -126,11 +126,11 @@ Example: <br>
 `load test.json`
 
 
-### Exiting: `bye`
+### Exiting: `exit`
 Exit the program. Program will gracefully shut down shortly after using the command.
 
-Format: `bye`
-* User input will not be accepted after using the `bye` command.
+Format: `exit`
+* User input will not be accepted after using the `exit` command.
 
 ------------------------------------------------------------------------------------------------------------------
 
