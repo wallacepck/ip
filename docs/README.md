@@ -1,9 +1,3 @@
----
-layout: page
-title: User Guide
-author: Wallace, heavily inspired by https://github.com/se-edu/addressbook-level3
----
-
 # Mana User Guide
 
 ![Ui.png](Ui.png)
